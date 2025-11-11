@@ -1201,6 +1201,237 @@ We welcome contributions! Please see our contribution guidelines:
 
 ---
 
+## 🧰 Advanced Features
+
+### 🤖 Intelligent Question Generation System
+
+InfraNest includes an advanced intelligent analyzer that uses Mistral 7B to generate contextual follow-up questions:
+
+#### Architecture
+
+```
+┌─────────────────────┐    ┌──────────────────────┐    ┌─────────────────────┐
+│   Core Questions    │───▶│  LLM Question Gen    │───▶│  Intelligent       │
+│   (6 predefined)    │    │  (Mistral 7B)        │    │  Analysis          │
+└─────────────────────┘    └──────────────────────┘    └─────────────────────┘
+```
+
+#### Core Question Types
+
+The system always asks 6 predefined core questions first:
+
+1. **What do you want this software to do?** - Project description
+2. **Who will use it?** - Target audience (Just me, My team, My customers)
+3. **Where would you like to use it?** - Platform (Mobile app, Website, Desktop, Chatbot)
+4. **Which area best fits your project?** - Domain (Web app, E-commerce, Healthcare, etc.)
+5. **Choose a programming language** - Technology preference
+6. **List the must-have features** - Core functionality
+
+#### Dynamic Follow-up Generation
+
+After core questions, the system uses AI to generate **contextual follow-up questions** based on:
+
+- Project domain (e-commerce, healthcare, etc.)
+- Platform (mobile, web, desktop)
+- Target audience (personal, team, customers)
+- Core features mentioned
+
+**Example Generated Questions:**
+
+**For E-commerce Projects:**
+- "Do you need payment gateway integration (Stripe, PayPal)?"
+- "Should products have inventory tracking and stock management?"
+- "Do you need shopping cart and checkout functionality?"
+
+**For Healthcare Projects:**
+- "Do you need HIPAA compliance or patient data encryption?"
+- "Should the system support appointment scheduling?"
+- "Do you require integration with medical records systems?"
+
+**For Mobile Apps:**
+- "Do you need push notifications for mobile users?"
+- "Should the app work offline or require internet connection?"
+- "Do you need location-based services or GPS integration?"
+
+#### Fallback Behavior
+
+If the Mistral 7B model is not loaded or fails, the system automatically falls back to **rule-based question generation** that creates context-aware questions based on project characteristics.
+
+### 🎯 InfraNest Copilot CLI
+
+InfraNest includes a powerful command-line interface for advanced users and automation:
+
+#### Installation
+
+```bash
+cd infranest/copilot
+pip install -r requirements.txt
+```
+
+#### Commands
+
+##### 1. Describe Backend
+Convert natural language to DSL specification:
+
+```bash
+python copilot.py describe_backend "Create a blog API with users, posts, and comments"
+
+# Save to file
+python copilot.py describe_backend "Create a blog API" --output blog.yml
+```
+
+##### 2. Preview Code
+Preview generated code structure:
+
+```bash
+python copilot.py preview_code blog.yml --framework django
+```
+
+##### 3. Deploy Project
+Deploy to cloud provider:
+
+```bash
+python copilot.py deploy_project blog.yml --provider railway
+```
+
+##### 4. View Logs
+View deployment logs:
+
+```bash
+python copilot.py view_logs blog-api --lines 50
+```
+
+##### 5. Run Audit
+Run security and performance audit:
+
+```bash
+python copilot.py run_audit blog.yml
+```
+
+##### 6. Simulate API
+Simulate API endpoint responses:
+
+```bash
+python copilot.py simulate_api blog.yml /api/v1/posts/ --method GET
+```
+
+#### Complete E-commerce Example
+
+```bash
+# Step 1: Generate DSL
+python copilot.py describe_backend \
+  "Build an e-commerce API with products, categories, shopping cart, orders, and user authentication" \
+  --output ecommerce.yml
+
+# Step 2: Preview Django code structure
+python copilot.py preview_code ecommerce.yml --framework django
+
+# Step 3: Deploy to Railway
+python copilot.py deploy_project ecommerce.yml --provider railway
+
+# Step 4: Check deployment logs
+python copilot.py view_logs ecommerce-api
+
+# Step 5: Run security audit
+python copilot.py run_audit ecommerce.yml
+```
+
+#### Copilot Configuration
+
+The CLI stores configuration in `~/.infranest/config.json`:
+
+```json
+{
+  "default_framework": "django",
+  "default_provider": "railway",
+  "api_keys": {
+    "groq": "your_groq_api_key",
+    "gemini": "your_gemini_api_key"
+  },
+  "preferences": {
+    "auto_deploy": false,
+    "include_tests": true,
+    "docker_enabled": true
+  }
+}
+```
+
+### 🔍 Intelligent Analyzer API
+
+For programmatic access, use the Intelligent Analyzer directly:
+
+```python
+from intelligent_analyzer import IntelligentAnalyzer
+
+# Initialize analyzer with GGUF model
+mistral_path = "path/to/your/mistral-7b-instruct-v0.1.Q4_K_M.gguf"
+analyzer = IntelligentAnalyzer(mistral_path)
+session_id = analyzer.start_new_session()
+
+# Get core questions
+core_questions = analyzer.get_core_questions()
+
+# Answer core questions
+analyzer.submit_core_response('description', 'A task management app')
+analyzer.submit_core_response('userAudience', 'My team')
+# ... answer all 6 core questions
+
+# Generate follow-up questions
+followup_result = analyzer.generate_followup_questions(5)
+if followup_result['success']:
+    questions = followup_result['questions']
+    
+    # Answer some follow-up questions
+    for question in questions[:3]:
+        answer = input(f"{question['text']}: ")
+        analyzer.submit_followup_response(question['id'], answer)
+
+# Perform analysis
+analysis_result = analyzer.analyze_requirements()
+if analysis_result['success']:
+    print(f"Analysis complete! Validity: {analysis_result['analysis']['validity_score']:.2f}")
+    print(f"Insights: {analysis_result['analysis']['insights']}")
+    print(f"Recommendations: {analysis_result['analysis']['recommendations']}")
+```
+
+#### REST API for Analyzer
+
+Start the analyzer API server:
+
+```bash
+cd infranest/core/analyzers
+python api_interface.py
+```
+
+The API will be available at `http://localhost:5001`.
+
+**Example API Usage:**
+
+```bash
+# Start a session
+curl -X POST http://localhost:5001/api/session/start
+
+# Get core questions
+curl "http://localhost:5001/api/questions/core?session_id=uuid-here"
+
+# Submit core answer
+curl -X POST http://localhost:5001/api/questions/core/description/answer \
+  -H "Content-Type: application/json" \
+  -d '{"session_id": "uuid-here", "question_id": "description", "answer": "A task management web app"}'
+
+# Generate follow-up questions
+curl -X POST http://localhost:5001/api/questions/generate \
+  -H "Content-Type: application/json" \
+  -d '{"session_id": "uuid-here", "num_questions": 5}'
+
+# Analyze requirements
+curl -X POST http://localhost:5001/api/analyze \
+  -H "Content-Type: application/json" \
+  -d '{"session_id": "uuid-here"}'
+```
+
+---
+
 ## 🐛 Troubleshooting
 
 ### Common Issues
@@ -1217,6 +1448,9 @@ pip install --upgrade -r requirements.txt
 
 # Check port availability
 netstat -ano | findstr :8000
+
+# Check for missing modules
+python -c "from ai_providers.simple_ai_manager import SimpleAIManager; print('✓ OK')"
 ```
 
 #### 2. Frontend Won't Start
@@ -1232,6 +1466,9 @@ npm install
 
 # Try alternate port
 npm run dev -- --port 5174
+
+# Check for TypeScript errors
+npm run build
 ```
 
 #### 3. "Failed to fetch" Errors
@@ -1239,8 +1476,9 @@ npm run dev -- --port 5174
 - **Cause**: Backend not running or wrong API URL
 - **Fix**: 
   1. Ensure backend is running on port 8000
-  2. Check `infranest/.env` has correct `VITE_API_URL`
-  3. Restart frontend after changing `.env`
+  2. Check `infranest/.env` has `VITE_API_URL=http://localhost:8000` (NOT `/api/v1`)
+  3. Restart frontend after changing `.env`: `Ctrl+C` then `npm run dev`
+  4. Clear browser cache and hard refresh (`Ctrl+Shift+R`)
 
 #### 4. No Follow-up Questions Generated
 
@@ -1249,14 +1487,109 @@ npm run dev -- --port 5174
   1. Add `GROQ_API_KEY` to `infranest/core/.env`
   2. Check console for API errors
   3. Verify Groq API quota at https://console.groq.com
+  4. Try fallback provider: Add `GEMINI_API_KEY` to `.env`
 
 #### 5. Generated Code Won't Build
 
 - **Cause**: Missing dependencies in generated project
 - **Fix**:
   1. Check `Dockerfile` and `docker-compose.yml` present
-  2. Ensure Docker is running
+  2. Ensure Docker is running: `docker --version`
   3. Try: `docker-compose build --no-cache`
+  4. Check logs: `docker-compose logs`
+
+#### 6. Port Already in Use
+
+```bash
+# Windows
+netstat -ano | findstr :8000
+taskkill /PID <PID> /F
+
+# Linux/Mac
+lsof -ti:8000 | xargs kill -9
+```
+
+#### 7. Missing AI Provider Modules
+
+```bash
+# Error: "No module named 'ai_providers'"
+cd infranest/core
+export PYTHONPATH="${PYTHONPATH}:$(pwd)"  # Linux/Mac
+set PYTHONPATH=%PYTHONPATH%;%cd%          # Windows CMD
+$env:PYTHONPATH += ";$(pwd)"              # Windows PowerShell
+```
+
+#### 8. Copilot CLI Not Working
+
+```bash
+cd infranest/copilot
+pip install --upgrade -r requirements.txt
+
+# Test import
+python -c "from copilot import cli; print('✓ OK')"
+```
+
+#### 9. Analyzer API Errors
+
+```bash
+# Check if Mistral model is loaded
+cd infranest/core/analyzers
+python -c "from intelligent_analyzer import IntelligentAnalyzer; print('✓ OK')"
+
+# Run with fallback (no GGUF model)
+python api_interface.py --no-model
+```
+
+#### 10. High Memory Usage
+
+- **Cause**: Large LLM models loaded in memory
+- **Fix**:
+  1. Use quantized models (Q4_K_M instead of Q8_0)
+  2. Reduce `max_tokens` in hyperparameters
+  3. Enable response streaming
+  4. Restart backend periodically: `python server.py`
+
+### Debug Mode
+
+Enable detailed logging:
+
+```bash
+# Backend
+cd infranest/core
+export DEBUG=True              # Linux/Mac
+set DEBUG=True                 # Windows CMD
+$env:DEBUG = "True"            # Windows PowerShell
+python server.py
+
+# Frontend
+cd infranest
+npm run dev -- --debug
+```
+
+### Getting Help
+
+If issues persist:
+
+1. **Check Logs**:
+   ```bash
+   # Backend logs
+   cd infranest/core
+   python server.py 2>&1 | tee backend.log
+   
+   # Frontend logs (check browser console)
+   F12 → Console tab
+   ```
+
+2. **Verify Setup**:
+   ```bash
+   # Run diagnostics
+   cd infranest
+   python test_end_to_end.py
+   ```
+
+3. **Report Issues**:
+   - Open issue at: https://github.com/bharat3645/PRISM-Insfranest/issues
+   - Include: OS, Python version, Node version, error logs, steps to reproduce
 
 ---
 
