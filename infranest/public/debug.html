@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>State Debug Tool - InfraNest</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            background: #0a0a0a;
+            color: #00ff88;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #00ccff;
+        }
+        pre {
+            background: #111;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border: 1px solid #333;
+        }
+        button {
+            background: linear-gradient(to right, #00ff88, #00ccff);
+            color: black;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        button:hover {
+            opacity: 0.8;
+        }
+        .section {
+            margin: 20px 0;
+            border: 1px solid #333;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        .warning {
+            color: #ffaa00;
+        }
+        .error {
+            color: #ff4444;
+        }
+        .success {
+            color: #00ff88;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔍 InfraNest State Debug Tool</h1>
+    
+    <div class="section">
+        <h2>LocalStorage Contents</h2>
+        <button onclick="loadLocalStorage()">🔄 Refresh</button>
+        <button onclick="clearAppStorage()">🗑️ Clear App Storage</button>
+        <button onclick="clearAllStorage()">⚠️ Clear All Storage</button>
+        <pre id="localStorage-content">Loading...</pre>
+    </div>
+    
+    <div class="section">
+        <h2>Zustand Store (infranest-project-storage)</h2>
+        <pre id="zustand-store">Loading...</pre>
+    </div>
+    
+    <div class="section">
+        <h2>Test Actions</h2>
+        <button onclick="testSetDSL()">✅ Test: Save Mock DSL</button>
+        <button onclick="testGetDSL()">📖 Test: Read DSL</button>
+        <button onclick="testNavigation()">🔗 Test: Navigate to Builder</button>
+        <div id="test-results" style="margin-top: 10px;"></div>
+    </div>
+    
+    <div class="section">
+        <h2>Debug Info</h2>
+        <pre id="debug-info">Loading...</pre>
+    </div>
+
+    <script>
+        function loadLocalStorage() {
+            const output = document.getElementById('localStorage-content');
+            const items = {};
+            
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                const value = localStorage.getItem(key);
+                items[key] = value;
+            }
+            
+            output.textContent = JSON.stringify(items, null, 2);
+            loadZustandStore();
+            loadDebugInfo();
+        }
+        
+        function loadZustandStore() {
+            const output = document.getElementById('zustand-store');
+            const storeData = localStorage.getItem('infranest-project-storage');
+            
+            if (storeData) {
+                try {
+                    const parsed = JSON.parse(storeData);
+                    output.innerHTML = '<span class="success">✅ Store found!</span>\n' + 
+                                     JSON.stringify(parsed, null, 2);
+                } catch (e) {
+                    output.innerHTML = '<span class="error">❌ Error parsing store: ' + e.message + '</span>';
+                }
+            } else {
+                output.innerHTML = '<span class="warning">⚠️ No store data found. Have you generated a DSL yet?</span>';
+            }
+        }
+        
+        function loadDebugInfo() {
+            const output = document.getElementById('debug-info');
+            const info = {
+                'Total localStorage items': localStorage.length,
+                'Storage quota': navigator.storage ? 'Available' : 'Not available',
+                'Cookies enabled': navigator.cookieEnabled,
+                'Current URL': window.location.href,
+                'Timestamp': new Date().toISOString()
+            };
+            output.textContent = JSON.stringify(info, null, 2);
+        }
+        
+        function clearAppStorage() {
+            if (confirm('Clear infranest-project-storage only?')) {
+                localStorage.removeItem('infranest-project-storage');
+                alert('✅ App storage cleared!');
+                loadLocalStorage();
+            }
+        }
+        
+        function clearAllStorage() {
+            if (confirm('⚠️ Clear ALL localStorage? This cannot be undone!')) {
+                localStorage.clear();
+                alert('✅ All storage cleared!');
+                loadLocalStorage();
+            }
+        }
+        
+        function testSetDSL() {
+            const mockDSL = {
+                meta: {
+                    name: 'test-api',
+                    description: 'Test DSL from debug tool',
+                    version: '1.0.0',
+                    framework: 'django',
+                    database: 'postgresql'
+                },
+                models: {
+                    TestModel: {
+                        fields: {
+                            id: { type: 'uuid', primary_key: true },
+                            name: { type: 'string', required: true }
+                        }
+                    }
+                },
+                auth: {
+                    provider: 'jwt',
+                    user_model: 'User',
+                    required_fields: ['email', 'password']
+                },
+                api: {
+                    base_path: '/api/v1',
+                    endpoints: []
+                }
+            };
+            
+            const storeData = {
+                state: {
+                    projects: [],
+                    currentProject: null,
+                    currentDSL: mockDSL,
+                    activeFile: null
+                },
+                version: 0
+            };
+            
+            localStorage.setItem('infranest-project-storage', JSON.stringify(storeData));
+            
+            document.getElementById('test-results').innerHTML = 
+                '<span class="success">✅ Mock DSL saved to store!</span>';
+            loadLocalStorage();
+        }
+        
+        function testGetDSL() {
+            const storeData = localStorage.getItem('infranest-project-storage');
+            const results = document.getElementById('test-results');
+            
+            if (storeData) {
+                try {
+                    const parsed = JSON.parse(storeData);
+                    if (parsed.state && parsed.state.currentDSL) {
+                        results.innerHTML = 
+                            '<span class="success">✅ DSL found!</span><br>' +
+                            '<pre>' + JSON.stringify(parsed.state.currentDSL, null, 2) + '</pre>';
+                    } else {
+                        results.innerHTML = 
+                            '<span class="warning">⚠️ Store exists but no currentDSL</span>';
+                    }
+                } catch (e) {
+                    results.innerHTML = 
+                        '<span class="error">❌ Error: ' + e.message + '</span>';
+                }
+            } else {
+                results.innerHTML = 
+                    '<span class="error">❌ No store data found</span>';
+            }
+        }
+        
+        function testNavigation() {
+            window.location.href = '/builder';
+        }
+        
+        // Auto-load on page load
+        window.onload = loadLocalStorage;
+        
+        // Auto-refresh every 5 seconds
+        setInterval(loadLocalStorage, 5000);
+    </script>
+</body>
+</html>

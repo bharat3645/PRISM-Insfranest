@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frontend API Test</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #0d1117;
+            color: #c9d1d9;
+        }
+        h1 { color: #58a6ff; }
+        button {
+            background: #238636;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 10px 5px;
+        }
+        button:hover { background: #2ea043; }
+        button:disabled { background: #484f58; cursor: not-allowed; }
+        .output {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 16px;
+            margin-top: 20px;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+        .success { color: #3fb950; }
+        .error { color: #f85149; }
+        .info { color: #58a6ff; }
+        .warning { color: #d29922; }
+        .section {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 16px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 InfraNest Frontend API Test</h1>
+    
+    <div class="section">
+        <h2>Environment Check</h2>
+        <div id="env-check"></div>
+    </div>
+
+    <div class="section">
+        <h2>API Tests</h2>
+        <button onclick="testHealth()">Test Health Endpoint</button>
+        <button onclick="testFollowupQuestions()">Test Follow-up Questions</button>
+        <button onclick="clearOutput()">Clear Output</button>
+    </div>
+
+    <div id="output" class="output"></div>
+
+    <script>
+        const API_BASE = 'http://localhost:8000';
+        
+        function log(message, type = 'info') {
+            const output = document.getElementById('output');
+            const timestamp = new Date().toLocaleTimeString();
+            const prefix = {
+                'info': '📘',
+                'success': '✅',
+                'error': '❌',
+                'warning': '⚠️'
+            }[type] || '📘';
+            
+            output.innerHTML += `<span class="${type}">[${timestamp}] ${prefix} ${message}</span>\n`;
+            output.scrollTop = output.scrollHeight;
+        }
+
+        function clearOutput() {
+            document.getElementById('output').innerHTML = '';
+        }
+
+        // Check environment on load
+        window.addEventListener('load', () => {
+            const envCheck = document.getElementById('env-check');
+            envCheck.innerHTML = `
+                <div class="info">
+                    <strong>API Base URL:</strong> ${API_BASE}<br>
+                    <strong>Current Page:</strong> ${window.location.href}<br>
+                    <strong>Browser:</strong> ${navigator.userAgent}
+                </div>
+            `;
+            
+            log('Page loaded - ready for testing', 'success');
+        });
+
+        async function testHealth() {
+            log('Testing health endpoint...', 'info');
+            
+            try {
+                const url = `${API_BASE}/health`;
+                log(`Calling GET ${url}`, 'info');
+                
+                const response = await fetch(url, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                log(`Response status: ${response.status} ${response.statusText}`, 
+                    response.ok ? 'success' : 'error');
+                
+                const data = await response.json();
+                log(`Response data: ${JSON.stringify(data, null, 2)}`, 'success');
+                
+            } catch (error) {
+                log(`Health check failed: ${error.message}`, 'error');
+                log(`Error details: ${error.stack}`, 'error');
+            }
+        }
+
+        async function testFollowupQuestions() {
+            log('Testing follow-up questions endpoint...', 'info');
+            
+            const userAnswers = {
+                project_area: "Task Management",
+                platform: "web",
+                auth_type: "email",
+                database: "postgresql",
+                must_have_features: ["user authentication", "task creation", "task assignment"],
+                nice_to_have_features: ["notifications", "file uploads"]
+            };
+            
+            try {
+                const url = `${API_BASE}/api/v1/generate-followup-questions`;
+                log(`Calling POST ${url}`, 'info');
+                log(`Payload: ${JSON.stringify(userAnswers, null, 2)}`, 'info');
+                
+                const startTime = Date.now();
+                
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ user_answers: userAnswers })
+                });
+                
+                const elapsed = Date.now() - startTime;
+                
+                log(`Response status: ${response.status} ${response.statusText} (${elapsed}ms)`, 
+                    response.ok ? 'success' : 'error');
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    log(`Error response: ${errorText}`, 'error');
+                    return;
+                }
+                
+                const data = await response.json();
+                
+                log(`✅ SUCCESS! Received response:`, 'success');
+                log(`  - Questions count: ${data.questions?.length || 0}`, 'success');
+                log(`  - Provider: ${data.provider || 'unknown'}`, 'success');
+                log(`  - Is Fallback: ${data.is_fallback || false}`, 'success');
+                log(`  - Timestamp: ${data.timestamp || 'N/A'}`, 'success');
+                
+                if (data.questions && data.questions.length > 0) {
+                    log(`\n📝 Generated Questions:`, 'info');
+                    data.questions.forEach((q, i) => {
+                        log(`  ${i + 1}. ${q}`, 'info');
+                    });
+                }
+                
+                log('\n🎉 API call successful! Frontend integration is working!', 'success');
+                
+            } catch (error) {
+                log(`Follow-up questions failed: ${error.message}`, 'error');
+                log(`Error type: ${error.name}`, 'error');
+                log(`Error details: ${error.stack}`, 'error');
+                
+                if (error.message.includes('Failed to fetch')) {
+                    log('⚠️  CORS or network issue detected!', 'warning');
+                    log('Check if backend is running on http://localhost:8000', 'warning');
+                }
+            }
+        }
+    </script>
+</body>
+</html>

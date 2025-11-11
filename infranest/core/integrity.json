@@ -1,0 +1,15 @@
+{
+  "timestamp": "2025-11-11T17:17:18.193810",
+  "files": {
+    "server.py": "738f5a50120277f16daf45e46aa17e5b405ae70d82a39a2eea00adaa6ad9909c",
+    "app_clean.py": "e1bbb3e964a2ab4f87c3b9746081eddb0c77c996b7011988e2381bad50621458",
+    "parsers/dsl_parser.py": "3e4bcc42d4c1f6f5265a270ea85bcbfea5bba7e0878d70ca048e855809363255",
+    "generators/base_generator.py": "8a7e33d1486db13135a783430c24872fe43ac01e11bf542f2264eb75a9181596",
+    "generators/django_generator.py": "86091d147dc9b1d8c2814997b4af9487dc862e3a7d10e29b2b0e7427a27ee043",
+    "generators/go_generator.py": "730f3c278b49fccf7d4b6f1c28b9184d06662ba0f7cdc9a2b796e802d0a91eda",
+    "generators/rails_generator.py": "42e4df8df99181f43a650c0188335a2811663c1af5fddb3038b130d8c39b0e57",
+    "ai_providers/simple_ai_manager.py": "ef87b0ba8f81ea7da03ce75af355d3ead7e8063c7e951c93387034babffe67e8",
+    "ai_providers/groq_provider.py": "afc8ca1cc00fcc838afd01e0c587d1c33df40692aad8307b19ece7a82fc666c2"
+  },
+  "canonical_entry": "server.py"
+}

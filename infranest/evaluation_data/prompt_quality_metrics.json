@@ -1,0 +1,362 @@
+[
+  {
+    "prompt": "Build a blog platform with user authentication",
+    "context_completeness": 0.91,
+    "clarity_score": 9.0,
+    "specificity_score": 8.9,
+    "questions_needed": 3,
+    "timestamp": "2025-10-12T18:46:54.954142",
+    "llm_model": "mixtral-8x7b-32768"
+  },
+  {
+    "prompt": "Build a blog platform with user authentication",
+    "context_completeness": 0.78,
+    "clarity_score": 8.2,
+    "specificity_score": 7.8,
+    "questions_needed": 4,
+    "timestamp": "2025-10-12T18:46:54.954142",
+    "llm_model": "llama-2-70b"
+  },
+  {
+    "prompt": "Build a blog platform with user authentication",
+    "context_completeness": 0.76,
+    "clarity_score": 8.2,
+    "specificity_score": 7.5,
+    "questions_needed": 7,
+    "timestamp": "2025-10-12T10:46:54.954142",
+    "llm_model": "mistral-7b"
+  },
+  {
+    "prompt": "Build a blog platform with user authentication",
+    "context_completeness": 0.91,
+    "clarity_score": 8.9,
+    "specificity_score": 9.3,
+    "questions_needed": 4,
+    "timestamp": "2025-10-12T10:46:54.954142",
+    "llm_model": "gemini-1.5-pro"
+  },
+  {
+    "prompt": "Create an e-commerce system with products and cart",
+    "context_completeness": 0.93,
+    "clarity_score": 9.0,
+    "specificity_score": 9.2,
+    "questions_needed": 3,
+    "timestamp": "2025-10-15T15:46:54.954142",
+    "llm_model": "mixtral-8x7b-32768"
+  },
+  {
+    "prompt": "Create an e-commerce system with products and cart",
+    "context_completeness": 0.82,
+    "clarity_score": 7.9,
+    "specificity_score": 8.1,
+    "questions_needed": 6,
+    "timestamp": "2025-10-15T03:46:54.954142",
+    "llm_model": "llama-2-70b"
+  },
+  {
+    "prompt": "Create an e-commerce system with products and cart",
+    "context_completeness": 0.79,
+    "clarity_score": 8.2,
+    "specificity_score": 7.3,
+    "questions_needed": 8,
+    "timestamp": "2025-10-15T04:46:54.954142",
+    "llm_model": "mistral-7b"
+  },
+  {
+    "prompt": "Create an e-commerce system with products and cart",
+    "context_completeness": 0.88,
+    "clarity_score": 8.9,
+    "specificity_score": 9.0,
+    "questions_needed": 3,
+    "timestamp": "2025-10-15T15:46:54.954142",
+    "llm_model": "gemini-1.5-pro"
+  },
+  {
+    "prompt": "Design a social media clone with posts and likes",
+    "context_completeness": 0.89,
+    "clarity_score": 9.3,
+    "specificity_score": 9.0,
+    "questions_needed": 4,
+    "timestamp": "2025-10-18T15:46:54.954142",
+    "llm_model": "mixtral-8x7b-32768"
+  },
+  {
+    "prompt": "Design a social media clone with posts and likes",
+    "context_completeness": 0.72,
+    "clarity_score": 8.2,
+    "specificity_score": 8.2,
+    "questions_needed": 5,
+    "timestamp": "2025-10-18T15:46:54.954142",
+    "llm_model": "llama-2-70b"
+  },
+  {
+    "prompt": "Design a social media clone with posts and likes",
+    "context_completeness": 0.79,
+    "clarity_score": 7.5,
+    "specificity_score": 7.2,
+    "questions_needed": 8,
+    "timestamp": "2025-10-18T04:46:54.954142",
+    "llm_model": "mistral-7b"
+  },
+  {
+    "prompt": "Design a social media clone with posts and likes",
+    "context_completeness": 0.84,
+    "clarity_score": 9.0,
+    "specificity_score": 9.2,
+    "questions_needed": 5,
+    "timestamp": "2025-10-18T12:46:54.954142",
+    "llm_model": "gemini-1.5-pro"
+  },
+  {
+    "prompt": "Implement a project management tool with tasks",
+    "context_completeness": 0.94,
+    "clarity_score": 9.3,
+    "specificity_score": 8.6,
+    "questions_needed": 2,
+    "timestamp": "2025-10-20T23:46:54.954142",
+    "llm_model": "mixtral-8x7b-32768"
+  },
+  {
+    "prompt": "Implement a project management tool with tasks",
+    "context_completeness": 0.7,
+    "clarity_score": 8.5,
+    "specificity_score": 7.7,
+    "questions_needed": 5,
+    "timestamp": "2025-10-21T20:46:54.954142",
+    "llm_model": "llama-2-70b"
+  },
+  {
+    "prompt": "Implement a project management tool with tasks",
+    "context_completeness": 0.7,
+    "clarity_score": 7.7,
+    "specificity_score": 7.3,
+    "questions_needed": 6,
+    "timestamp": "2025-10-21T01:46:54.954142",
+    "llm_model": "mistral-7b"
+  },
+  {
+    "prompt": "Implement a project management tool with tasks",
+    "context_completeness": 0.92,
+    "clarity_score": 8.7,
+    "specificity_score": 9.0,
+    "questions_needed": 4,
+    "timestamp": "2025-10-21T00:46:54.954142",
+    "llm_model": "gemini-1.5-pro"
+  },
+  {
+    "prompt": "Build a task management system with teams",
+    "context_completeness": 0.92,
+    "clarity_score": 9.1,
+    "specificity_score": 9.0,
+    "questions_needed": 4,
+    "timestamp": "2025-10-23T23:46:54.954142",
+    "llm_model": "mixtral-8x7b-32768"
+  },
+  {
+    "prompt": "Build a task management system with teams",
+    "context_completeness": 0.82,
+    "clarity_score": 8.4,
+    "specificity_score": 7.5,
+    "questions_needed": 4,
+    "timestamp": "2025-10-24T15:46:54.954142",
+    "llm_model": "llama-2-70b"
+  },
+  {
+    "prompt": "Build a task management system with teams",
+    "context_completeness": 0.79,
+    "clarity_score": 8.2,
+    "specificity_score": 7.6,
+    "questions_needed": 7,
+    "timestamp": "2025-10-24T20:46:54.954142",
+    "llm_model": "mistral-7b"
+  },
+  {
+    "prompt": "Build a task management system with teams",
+    "context_completeness": 0.87,
+    "clarity_score": 8.6,
+    "specificity_score": 9.4,
+    "questions_needed": 5,
+    "timestamp": "2025-10-24T02:46:54.954142",
+    "llm_model": "gemini-1.5-pro"
+  },
+  {
+    "prompt": "Create a booking system with calendar integration",
+    "context_completeness": 0.91,
+    "clarity_score": 9.2,
+    "specificity_score": 9.2,
+    "questions_needed": 4,
+    "timestamp": "2025-10-27T09:46:54.954142",
+    "llm_model": "mixtral-8x7b-32768"
+  },
+  {
+    "prompt": "Create a booking system with calendar integration",
+    "context_completeness": 0.8,
+    "clarity_score": 8.0,
+    "specificity_score": 7.7,
+    "questions_needed": 7,
+    "timestamp": "2025-10-27T12:46:54.954142",
+    "llm_model": "llama-2-70b"
+  },
+  {
+    "prompt": "Create a booking system with calendar integration",
+    "context_completeness": 0.8,
+    "clarity_score": 7.7,
+    "specificity_score": 7.6,
+    "questions_needed": 7,
+    "timestamp": "2025-10-27T02:46:54.954142",
+    "llm_model": "mistral-7b"
+  },
+  {
+    "prompt": "Create a booking system with calendar integration",
+    "context_completeness": 0.85,
+    "clarity_score": 9.1,
+    "specificity_score": 8.8,
+    "questions_needed": 3,
+    "timestamp": "2025-10-27T07:46:54.954142",
+    "llm_model": "gemini-1.5-pro"
+  },
+  {
+    "prompt": "Design a real-time chat application",
+    "context_completeness": 0.94,
+    "clarity_score": 8.9,
+    "specificity_score": 8.8,
+    "questions_needed": 4,
+    "timestamp": "2025-10-30T09:46:54.954142",
+    "llm_model": "mixtral-8x7b-32768"
+  },
+  {
+    "prompt": "Design a real-time chat application",
+    "context_completeness": 0.82,
+    "clarity_score": 8.3,
+    "specificity_score": 7.5,
+    "questions_needed": 5,
+    "timestamp": "2025-10-30T18:46:54.954142",
+    "llm_model": "llama-2-70b"
+  },
+  {
+    "prompt": "Design a real-time chat application",
+    "context_completeness": 0.72,
+    "clarity_score": 7.7,
+    "specificity_score": 7.5,
+    "questions_needed": 5,
+    "timestamp": "2025-10-30T04:46:54.954142",
+    "llm_model": "mistral-7b"
+  },
+  {
+    "prompt": "Design a real-time chat application",
+    "context_completeness": 0.9,
+    "clarity_score": 8.7,
+    "specificity_score": 9.2,
+    "questions_needed": 5,
+    "timestamp": "2025-10-30T12:46:54.954142",
+    "llm_model": "gemini-1.5-pro"
+  },
+  {
+    "prompt": "Build an inventory management system",
+    "context_completeness": 0.92,
+    "clarity_score": 9.2,
+    "specificity_score": 8.6,
+    "questions_needed": 2,
+    "timestamp": "2025-11-02T07:46:54.954142",
+    "llm_model": "mixtral-8x7b-32768"
+  },
+  {
+    "prompt": "Build an inventory management system",
+    "context_completeness": 0.84,
+    "clarity_score": 7.9,
+    "specificity_score": 7.9,
+    "questions_needed": 6,
+    "timestamp": "2025-11-02T03:46:54.954142",
+    "llm_model": "llama-2-70b"
+  },
+  {
+    "prompt": "Build an inventory management system",
+    "context_completeness": 0.65,
+    "clarity_score": 8.0,
+    "specificity_score": 7.6,
+    "questions_needed": 8,
+    "timestamp": "2025-11-02T14:46:54.954142",
+    "llm_model": "mistral-7b"
+  },
+  {
+    "prompt": "Build an inventory management system",
+    "context_completeness": 0.85,
+    "clarity_score": 8.5,
+    "specificity_score": 9.1,
+    "questions_needed": 4,
+    "timestamp": "2025-11-02T18:46:54.954142",
+    "llm_model": "gemini-1.5-pro"
+  },
+  {
+    "prompt": "Create a customer relationship management tool",
+    "context_completeness": 0.94,
+    "clarity_score": 9.4,
+    "specificity_score": 8.6,
+    "questions_needed": 4,
+    "timestamp": "2025-11-05T14:46:54.954142",
+    "llm_model": "mixtral-8x7b-32768"
+  },
+  {
+    "prompt": "Create a customer relationship management tool",
+    "context_completeness": 0.81,
+    "clarity_score": 8.5,
+    "specificity_score": 7.6,
+    "questions_needed": 7,
+    "timestamp": "2025-11-05T20:46:54.954142",
+    "llm_model": "llama-2-70b"
+  },
+  {
+    "prompt": "Create a customer relationship management tool",
+    "context_completeness": 0.69,
+    "clarity_score": 8.2,
+    "specificity_score": 7.2,
+    "questions_needed": 5,
+    "timestamp": "2025-11-05T18:46:54.954142",
+    "llm_model": "mistral-7b"
+  },
+  {
+    "prompt": "Create a customer relationship management tool",
+    "context_completeness": 0.91,
+    "clarity_score": 8.7,
+    "specificity_score": 9.4,
+    "questions_needed": 3,
+    "timestamp": "2025-11-05T17:46:54.954142",
+    "llm_model": "gemini-1.5-pro"
+  },
+  {
+    "prompt": "Design a content management system",
+    "context_completeness": 0.85,
+    "clarity_score": 9.0,
+    "specificity_score": 8.8,
+    "questions_needed": 3,
+    "timestamp": "2025-11-08T08:46:54.954142",
+    "llm_model": "mixtral-8x7b-32768"
+  },
+  {
+    "prompt": "Design a content management system",
+    "context_completeness": 0.72,
+    "clarity_score": 8.1,
+    "specificity_score": 7.9,
+    "questions_needed": 7,
+    "timestamp": "2025-11-08T01:46:54.954142",
+    "llm_model": "llama-2-70b"
+  },
+  {
+    "prompt": "Design a content management system",
+    "context_completeness": 0.66,
+    "clarity_score": 7.8,
+    "specificity_score": 7.7,
+    "questions_needed": 6,
+    "timestamp": "2025-11-08T02:46:54.954142",
+    "llm_model": "mistral-7b"
+  },
+  {
+    "prompt": "Design a content management system",
+    "context_completeness": 0.87,
+    "clarity_score": 9.0,
+    "specificity_score": 9.4,
+    "questions_needed": 4,
+    "timestamp": "2025-11-08T20:46:54.954142",
+    "llm_model": "gemini-1.5-pro"
+  }
+]

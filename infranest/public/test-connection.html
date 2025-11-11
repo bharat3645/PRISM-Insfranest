@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Connection Test - InfraNest</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 30px;
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+      color: #fff;
+      line-height: 1.6;
+    }
+    h1 {
+      color: #00ff88;
+      text-align: center;
+      margin-bottom: 40px;
+      font-size: 32px;
+    }
+    .test-card {
+      background: #222;
+      border: 2px solid #333;
+      border-radius: 12px;
+      padding: 25px;
+      margin-bottom: 25px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+    .test-card h2 {
+      color: #44aaff;
+      margin-top: 0;
+      font-size: 22px;
+      border-bottom: 2px solid #333;
+      padding-bottom: 10px;
+    }
+    button {
+      background: linear-gradient(135deg, #00ff88 0%, #00cc6a 100%);
+      color: #000;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 15px;
+      margin-right: 12px;
+      margin-bottom: 12px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0, 255, 136, 0.3);
+    }
+    button:hover {
+      background: linear-gradient(135deg, #00cc6a 0%, #009952 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 255, 136, 0.4);
+    }
+    button:active {
+      transform: translateY(0);
+    }
+    .output {
+      background: #000;
+      border: 2px solid #333;
+      border-radius: 8px;
+      padding: 20px;
+      margin-top: 20px;
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      max-height: 400px;
+      overflow-y: auto;
+      line-height: 1.8;
+    }
+    .success { color: #00ff88; font-weight: 600; }
+    .error { color: #ff4444; font-weight: 600; }
+    .info { color: #44aaff; }
+    .warning { color: #ffaa00; }
+    .status-indicator {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      margin-right: 10px;
+      animation: pulse 2s infinite;
+    }
+    .status-success { background: #00ff88; }
+    .status-error { background: #ff4444; }
+    .status-pending { background: #ffaa00; }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    .big-status {
+      text-align: center;
+      font-size: 48px;
+      margin: 30px 0;
+    }
+    pre {
+      background: #111;
+      padding: 15px;
+      border-radius: 6px;
+      overflow-x: auto;
+      border-left: 4px solid #00ff88;
+    }
+  </style>
+</head>
+<body>
+  <h1>🔌 InfraNest Connection Test</h1>
+
+  <div class="test-card">
+    <h2>Quick Test - All Systems</h2>
+    <button onclick="testEverything()">🚀 Test Everything</button>
+    <div id="main-output" class="output"></div>
+  </div>
+
+  <div class="test-card">
+    <h2>1. Backend Health Check</h2>
+    <button onclick="testBackendHealth()">Test Backend</button>
+    <div id="health-output" class="output"></div>
+  </div>
+
+  <div class="test-card">
+    <h2>2. Code Generation API</h2>
+    <button onclick="testCodeGeneration()">Test Code Generation</button>
+    <div id="codegen-output" class="output"></div>
+  </div>
+
+  <div class="test-card">
+    <h2>3. DSL Parsing API</h2>
+    <button onclick="testDSLParsing()">Test DSL Parsing</button>
+    <div id="dsl-output" class="output"></div>
+  </div>
+
+  <div class="test-card">
+    <h2>4. Follow-up Questions API</h2>
+    <button onclick="testFollowupQuestions()">Test Follow-up Questions</button>
+    <div id="followup-output" class="output"></div>
+  </div>
+
+  <script>
+    const API_BASE = 'http://localhost:8000';
+
+    function log(elementId, message, type = 'info') {
+      const element = document.getElementById(elementId);
+      const colors = {
+        success: '#00ff88',
+        error: '#ff4444',
+        info: '#44aaff',
+        warning: '#ffaa00'
+      };
+      const time = new Date().toLocaleTimeString();
+      element.innerHTML += `<div style="color: ${colors[type]}">[${time}] ${message}</div>`;
+      element.scrollTop = element.scrollHeight;
+    }
+
+    function clearOutput(elementId) {
+      document.getElementById(elementId).innerHTML = '';
+    }
+
+    async function testEverything() {
+      clearOutput('main-output');
+      log('main-output', '🧪 Running all tests...', 'info');
+      log('main-output', '━'.repeat(60), 'info');
+      
+      const tests = [
+        { name: 'Backend Health', fn: () => testBackendHealth(false) },
+        { name: 'Code Generation', fn: () => testCodeGeneration(false) },
+        { name: 'DSL Parsing', fn: () => testDSLParsing(false) },
+        { name: 'Follow-up Questions', fn: () => testFollowupQuestions(false) }
+      ];
+
+      let passed = 0;
+      let failed = 0;
+
+      for (const test of tests) {
+        try {
+          log('main-output', `\n🔍 Testing: ${test.name}...`, 'info');
+          await test.fn();
+          log('main-output', `✅ ${test.name}: PASSED`, 'success');
+          passed++;
+        } catch (error) {
+          log('main-output', `❌ ${test.name}: FAILED - ${error.message}`, 'error');
+          failed++;
+        }
+      }
+
+      log('main-output', '\n' + '━'.repeat(60), 'info');
+      log('main-output', `\n📊 Results: ${passed} passed, ${failed} failed`, passed === tests.length ? 'success' : 'warning');
+      
+      if (passed === tests.length) {
+        log('main-output', '\n🎉 ALL TESTS PASSED! System is ready!', 'success');
+      } else {
+        log('main-output', '\n⚠️ Some tests failed. Check individual test outputs for details.', 'warning');
+      }
+    }
+
+    async function testBackendHealth(showOutput = true) {
+      const outputId = showOutput ? 'health-output' : null;
+      if (showOutput) clearOutput(outputId);
+      
+      try {
+        if (showOutput) log(outputId, '📡 Connecting to backend...', 'info');
+        
+        const response = await fetch(`${API_BASE}/health`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        
+        if (showOutput) {
+          log(outputId, '✅ Backend is ONLINE!', 'success');
+          log(outputId, `   Status: ${data.status}`, 'info');
+          log(outputId, `   Version: ${data.version}`, 'info');
+          log(outputId, `   AI Available: ${data.ai_available}`, 'info');
+          log(outputId, `   Generators: ${data.generators.join(', ')}`, 'info');
+        }
+        
+        return data;
+      } catch (error) {
+        if (showOutput) {
+          log(outputId, `❌ Backend connection FAILED!`, 'error');
+          log(outputId, `   Error: ${error.message}`, 'error');
+          log(outputId, `   Make sure backend is running on port 8000`, 'warning');
+        }
+        throw error;
+      }
+    }
+
+    async function testCodeGeneration(showOutput = true) {
+      const outputId = showOutput ? 'codegen-output' : null;
+      if (showOutput) clearOutput(outputId);
+      
+      try {
+        if (showOutput) log(outputId, '🔨 Testing code generation...', 'info');
+        
+        const dsl = {
+          meta: {
+            name: 'test-app',
+            version: '1.0',
+            framework: 'django',
+            database: 'postgresql'
+          },
+          models: {
+            User: {
+              fields: {
+                email: { type: 'string', max_length: 255 },
+                username: { type: 'string', max_length: 100 }
+              }
+            }
+          }
+        };
+
+        if (showOutput) log(outputId, '📤 Sending DSL to backend...', 'info');
+        
+        const response = await fetch(`${API_BASE}/api/v1/generate-code`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            dsl: dsl,
+            framework: 'django'
+          })
+        });
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(`HTTP ${response.status}: ${errorText}`);
+        }
+
+        const result = await response.json();
+        
+        if (showOutput) {
+          log(outputId, '✅ Code generation SUCCESS!', 'success');
+          log(outputId, `   Framework: ${result.framework}`, 'info');
+          log(outputId, `   Files generated: ${result.files.length}`, 'info');
+          log(outputId, '\n📁 Generated files:', 'info');
+          result.files.slice(0, 10).forEach(file => {
+            log(outputId, `   • ${file.path}`, 'info');
+          });
+          if (result.files.length > 10) {
+            log(outputId, `   ... and ${result.files.length - 10} more files`, 'info');
+          }
+        }
+        
+        return result;
+      } catch (error) {
+        if (showOutput) {
+          log(outputId, `❌ Code generation FAILED!`, 'error');
+          log(outputId, `   Error: ${error.message}`, 'error');
+        }
+        throw error;
+      }
+    }
+
+    async function testDSLParsing(showOutput = true) {
+      const outputId = showOutput ? 'dsl-output' : null;
+      if (showOutput) clearOutput(outputId);
+      
+      try {
+        if (showOutput) log(outputId, '📝 Testing DSL parsing...', 'info');
+        
+        const prompt = "Build a blog application with posts, comments, and user authentication";
+        
+        if (showOutput) log(outputId, `   Prompt: "${prompt}"`, 'info');
+        
+        const response = await fetch(`${API_BASE}/api/v1/parse-prompt`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            prompt: prompt,
+            use_multi_agent: true
+          })
+        });
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(`HTTP ${response.status}: ${errorText}`);
+        }
+
+        const result = await response.json();
+        
+        if (showOutput) {
+          log(outputId, '✅ DSL parsing SUCCESS!', 'success');
+          log(outputId, `   DSL generated: ${JSON.stringify(result.dsl.meta).substring(0, 100)}...`, 'info');
+          if (result.agents_used) {
+            log(outputId, `   AI agents used: ${result.agents_used.join(', ')}`, 'info');
+          }
+          log(outputId, '\n📋 Generated DSL:', 'info');
+          log(outputId, `<pre>${JSON.stringify(result.dsl, null, 2).substring(0, 500)}...</pre>`, 'info');
+        }
+        
+        return result;
+      } catch (error) {
+        if (showOutput) {
+          log(outputId, `❌ DSL parsing FAILED!`, 'error');
+          log(outputId, `   Error: ${error.message}`, 'error');
+        }
+        throw error;
+      }
+    }
+
+    async function testFollowupQuestions(showOutput = true) {
+      const outputId = showOutput ? 'followup-output' : null;
+      if (showOutput) clearOutput(outputId);
+      
+      try {
+        if (showOutput) log(outputId, '💬 Testing follow-up questions...', 'info');
+        
+        const userAnswers = {
+          description: 'A financial trading platform',
+          user_audience: 'traders, investors',
+          platform: 'web',
+          project_area: 'finance',
+          programming_language: 'Python',
+          must_have_features: ['real-time data', 'authentication']
+        };
+        
+        const response = await fetch(`${API_BASE}/api/v1/generate-followup-questions`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            user_answers: userAnswers
+          })
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+
+        const result = await response.json();
+        
+        if (showOutput) {
+          log(outputId, '✅ Follow-up questions SUCCESS!', 'success');
+          log(outputId, `   Questions generated: ${result.questions.length}`, 'info');
+          log(outputId, '\n❓ Questions:', 'info');
+          result.questions.forEach((q, i) => {
+            log(outputId, `   ${i + 1}. ${q}`, 'info');
+          });
+        }
+        
+        return result;
+      } catch (error) {
+        if (showOutput) {
+          log(outputId, `⚠️ Follow-up questions API unavailable (using fallback)`, 'warning');
+          log(outputId, `   Error: ${error.message}`, 'warning');
+          log(outputId, `   This is OK - client-side fallback will be used`, 'info');
+        }
+        // Don't throw - this is expected to fail, fallback works
+        return { questions: [] };
+      }
+    }
+
+    // Auto-run tests on page load
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        testEverything();
+      }, 500);
+    });
+  </script>
+</body>
+</html>

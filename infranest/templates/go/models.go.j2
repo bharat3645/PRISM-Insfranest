@@ -1,0 +1,32 @@
+package models
+
+import (
+	"time"
+	"github.com/google/uuid"
+	"gorm.io/gorm"
+)
+
+{% for model_name, model in models.items() %}
+type {{ model_name }} struct {
+	{% for field_name, field in model.fields.items() %}
+	{% if field.type == 'uuid' or field.primary_key %}
+	{{ field_name|camelcase }} uuid.UUID `json:"{{ field_name }}" gorm:"primaryKey;type:uuid;default:uuid_generate_v4()"`
+	{% elif field.type == 'string' %}
+	{{ field_name|camelcase }} string `json:"{{ field_name }}"{% if field.required %} gorm:"not null"{% endif %}{% if field.unique %} gorm:"unique"{% endif %}`
+	{% elif field.type == 'text' %}
+	{{ field_name|camelcase }} string `json:"{{ field_name }}"{% if field.required %} gorm:"not null"{% endif %}`
+	{% elif field.type == 'integer' %}
+	{{ field_name|camelcase }} int `json:"{{ field_name }}"{% if field.required %} gorm:"not null"{% endif %}`
+	{% elif field.type == 'float' or field.type == 'decimal' %}
+	{{ field_name|camelcase }} float64 `json:"{{ field_name }}"{% if field.required %} gorm:"not null"{% endif %}`
+	{% elif field.type == 'boolean' %}
+	{{ field_name|camelcase }} bool `json:"{{ field_name }}" gorm:"default:{% if field.default %}{{ field.default }}{% else %}false{% endif %}"`
+	{% elif field.type == 'datetime' or field.type == 'date' %}
+	{{ field_name|camelcase }} time.Time `json:"{{ field_name }}"{% if field.auto_now_add %} gorm:"autoCreateTime"{% elif field.auto_now %} gorm:"autoUpdateTime"{% endif %}`
+	{% elif field.type == 'foreign_key' %}
+	{{ field_name|camelcase }} uuid.UUID `json:"{{ field_name }}" gorm:"type:uuid;{% if field.required %}not null;{% endif %}"`
+	{{ field.reference }} {{ field.reference }} `json:"{{ field.reference|snakecase }}" gorm:"foreignKey:{{ field_name|camelcase }}"`
+	{% endif %}
+	{% endfor %}
+}
+{% endfor %}

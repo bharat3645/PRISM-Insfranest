@@ -1,0 +1,34 @@
+package main
+
+import (
+	"log"
+	"{{ project_name }}/database"
+	"{{ project_name }}/routes"
+	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
+	"github.com/gofiber/fiber/v2/middleware/logger"
+)
+
+func main() {
+	// Initialize database
+	database.ConnectDB()
+
+	// Create fiber app
+	app := fiber.New(fiber.Config{
+		AppName: "{{ project_name }} API",
+	})
+
+	// Middleware
+	app.Use(logger.New())
+	app.Use(cors.New(cors.Config{
+		AllowOrigins: "*",
+		AllowHeaders: "Origin, Content-Type, Accept, Authorization",
+		AllowMethods: "GET, POST, PUT, DELETE, OPTIONS",
+	}))
+
+	// Setup routes
+	routes.SetupRoutes(app)
+
+	// Start server
+	log.Fatal(app.Listen(":3000"))
+}

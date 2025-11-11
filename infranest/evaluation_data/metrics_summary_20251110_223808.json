@@ -1,0 +1,51 @@
+{
+  "generated_at": "2025-11-10T22:38:08.238605",
+  "overall_stats": {
+    "total_generations": 1,
+    "frameworks": {
+      "django": 1
+    },
+    "models": {
+      "mixtral-8x7b-32768": 1
+    },
+    "performance": {
+      "avg_generation_time": 10.5,
+      "avg_tokens_used": 15234,
+      "avg_cost_usd": 0.023,
+      "total_cost_usd": 0.023
+    },
+    "quality": {
+      "avg_code_quality_score": 9.2,
+      "avg_test_coverage": 85.0,
+      "avg_files_generated": 23,
+      "avg_lines_of_code": 1847
+    },
+    "success_rates": {
+      "build_success_rate": 100.0,
+      "test_success_rate": 100.0,
+      "deployment_success_rate": 100.0
+    },
+    "user_satisfaction": {
+      "avg_rating": 5,
+      "responses": 1
+    }
+  },
+  "model_comparison": {
+    "comparison": {
+      "mixtral-8x7b-32768": {
+        "count": 1,
+        "avg_generation_time": 10.5,
+        "avg_code_quality": 9.2,
+        "success_rate": 100.0,
+        "avg_cost": 0.023,
+        "cost_effectiveness": 400.0
+      }
+    },
+    "winner": {
+      "model": "mixtral-8x7b-32768",
+      "reason": "Best cost-effectiveness (quality per dollar)",
+      "score": 400.0
+    }
+  },
+  "prompt_quality_summary": {}
+}

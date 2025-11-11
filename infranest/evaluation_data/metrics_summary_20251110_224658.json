@@ -1,0 +1,86 @@
+{
+  "generated_at": "2025-11-10T22:46:58.356179",
+  "overall_stats": {
+    "total_generations": 121,
+    "frameworks": {
+      "django": 41,
+      "go": 40,
+      "rails": 40
+    },
+    "models": {
+      "mixtral-8x7b-32768": 31,
+      "llama-2-70b": 30,
+      "mistral-7b": 30,
+      "gemini-1.5-pro": 30
+    },
+    "performance": {
+      "avg_generation_time": 9.951735537190082,
+      "avg_tokens_used": 13075.537190082645,
+      "avg_cost_usd": 0.0028595041322314048,
+      "total_cost_usd": 0.346
+    },
+    "quality": {
+      "avg_code_quality_score": 8.468677685950412,
+      "avg_test_coverage": 88.25206611570248,
+      "avg_files_generated": 18.60330578512397,
+      "avg_lines_of_code": 1384.7851239669421
+    },
+    "success_rates": {
+      "build_success_rate": 82.64462809917356,
+      "test_success_rate": 73.55371900826447,
+      "deployment_success_rate": 71.07438016528926
+    },
+    "user_satisfaction": {
+      "avg_rating": 3.8658536585365852,
+      "responses": 82
+    }
+  },
+  "model_comparison": {
+    "comparison": {
+      "mistral-7b": {
+        "count": 30,
+        "avg_generation_time": 6.43,
+        "avg_code_quality": 7.822333333333334,
+        "success_rate": 66.66666666666666,
+        "avg_cost": 0.0015533333333333332,
+        "cost_effectiveness": 5281.783696967521
+      },
+      "llama-2-70b": {
+        "count": 30,
+        "avg_generation_time": 12.003,
+        "avg_code_quality": 8.141666666666667,
+        "success_rate": 53.333333333333336,
+        "avg_cost": 0.00299,
+        "cost_effectiveness": 2867.714639203915
+      },
+      "mixtral-8x7b-32768": {
+        "count": 31,
+        "avg_generation_time": 9.266451612903225,
+        "avg_code_quality": 9.113225806451613,
+        "success_rate": 93.54838709677419,
+        "avg_cost": 0.002635483870967742,
+        "cost_effectiveness": 4741.686587942407
+      },
+      "gemini-1.5-pro": {
+        "count": 30,
+        "avg_generation_time": 12.130333333333333,
+        "avg_code_quality": 8.776,
+        "success_rate": 80.0,
+        "avg_cost": 0.004266666666666667,
+        "cost_effectiveness": 2123.3580924434577
+      }
+    },
+    "winner": {
+      "model": "mistral-7b",
+      "reason": "Best cost-effectiveness (quality per dollar)",
+      "score": 5281.783696967521
+    }
+  },
+  "prompt_quality_summary": {
+    "total_prompts": 40,
+    "avg_context_completeness": 0.82825,
+    "avg_clarity_score": 8.5175,
+    "avg_specificity_score": 8.3225,
+    "avg_questions_needed": 4.9
+  }
+}

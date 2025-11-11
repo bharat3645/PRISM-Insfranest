@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>InfraNest - Create Test DSL</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            padding: 40px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .container {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 30px;
+        }
+        h1 {
+            color: #00ff88;
+            margin-top: 0;
+        }
+        button {
+            background: linear-gradient(135deg, #00ff88, #00ccff);
+            color: #000;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 10px 5px;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.3);
+        }
+        .success {
+            background: #00ff88;
+            color: #000;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            display: none;
+        }
+        .info {
+            background: #333;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #00ff88;
+        }
+        pre {
+            background: #0a0a0a;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 InfraNest DSL Creator</h1>
+        
+        <div class="info">
+            <strong>Problem:</strong> The Code Generator needs a DSL to work, but you don't have one yet.<br>
+            <strong>Solution:</strong> Click the button below to create a test DSL automatically!
+        </div>
+
+        <button onclick="createTestDSL()">✨ Create Test DSL (Blog System)</button>
+        <button onclick="createAdvancedDSL()">🔥 Create Advanced DSL (E-commerce)</button>
+        <button onclick="clearDSL()">🗑️ Clear DSL</button>
+
+        <div id="success" class="success"></div>
+
+        <div class="info" style="margin-top: 30px;">
+            <h3>What happens when you click:</h3>
+            <ol>
+                <li>A complete DSL specification is created</li>
+                <li>It's saved to your browser's localStorage</li>
+                <li>You can then go to the Code Generator page</li>
+                <li>Select Django/Go/Rails and generate code!</li>
+            </ol>
+        </div>
+
+        <div class="info">
+            <h3>After clicking above:</h3>
+            <ol>
+                <li>Go to: <a href="http://localhost:5173/generate" style="color: #00ff88;">http://localhost:5173/generate</a></li>
+                <li>Select your framework</li>
+                <li>Click "Generate Code"</li>
+                <li>You'll see 20+ complete files!</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        function createTestDSL() {
+            const dsl = {
+                meta: {
+                    name: 'blog-system',
+                    description: 'A modern blog platform with posts, comments, and user management',
+                    version: '1.0.0',
+                    framework: 'django',
+                    database: 'postgresql'
+                },
+                auth: {
+                    provider: 'jwt',
+                    user_model: 'User',
+                    required_fields: ['email', 'password', 'username'],
+                    optional_fields: ['first_name', 'last_name', 'bio']
+                },
+                models: {
+                    User: {
+                        fields: {
+                            email: { type: 'string', unique: true, required: true },
+                            username: { type: 'string', unique: true, required: true },
+                            password: { type: 'string', required: true, hashed: true },
+                            first_name: { type: 'string' },
+                            last_name: { type: 'string' },
+                            bio: { type: 'text' },
+                            created_at: { type: 'datetime', auto_now_add: true }
+                        }
+                    },
+                    Post: {
+                        fields: {
+                            title: { type: 'string', max_length: 200, required: true },
+                            slug: { type: 'string', unique: true, required: true },
+                            content: { type: 'text', required: true },
+                            author: { type: 'foreign_key', model: 'User', required: true },
+                            published: { type: 'boolean', default: false },
+                            created_at: { type: 'datetime', auto_now_add: true },
+                            updated_at: { type: 'datetime', auto_now: true }
+                        }
+                    },
+                    Comment: {
+                        fields: {
+                            post: { type: 'foreign_key', model: 'Post', required: true },
+                            author: { type: 'foreign_key', model: 'User', required: true },
+                            content: { type: 'text', required: true },
+                            created_at: { type: 'datetime', auto_now_add: true }
+                        }
+                    }
+                },
+                api: {
+                    base_path: '/api/v1',
+                    endpoints: [
+                        { path: '/auth/register', method: 'POST', handler: 'auth.register', public: true },
+                        { path: '/auth/login', method: 'POST', handler: 'auth.login', public: true },
+                        { path: '/posts', method: 'GET', handler: 'posts.list', public: true },
+                        { path: '/posts', method: 'POST', handler: 'posts.create', auth_required: true },
+                        { path: '/posts/:id', method: 'GET', handler: 'posts.detail', public: true },
+                        { path: '/posts/:id/comments', method: 'GET', handler: 'comments.list', public: true },
+                        { path: '/posts/:id/comments', method: 'POST', handler: 'comments.create', auth_required: true }
+                    ]
+                }
+            };
+
+            // Save to localStorage in the correct format for Zustand store
+            const storeData = {
+                state: {
+                    projects: [],
+                    currentProject: null,
+                    currentDSL: dsl,
+                    promptFormData: null,
+                    activeFile: null
+                },
+                version: 0
+            };
+            localStorage.setItem('infranest-project-storage', JSON.stringify(storeData));
+            
+            // Show success message
+            const successDiv = document.getElementById('success');
+            successDiv.innerHTML = `
+                <strong>✅ Success!</strong> Test DSL created with:
+                <ul>
+                    <li>3 Models: User, Post, Comment</li>
+                    <li>7 API Endpoints</li>
+                    <li>JWT Authentication</li>
+                    <li>PostgreSQL Database</li>
+                </ul>
+                <strong>Next Step:</strong> <a href="http://localhost:5173/generate" style="color: #000; text-decoration: underline;">Go to Code Generator →</a>
+            `;
+            successDiv.style.display = 'block';
+            
+            console.log('DSL created:', dsl);
+        }
+
+        function createAdvancedDSL() {
+            const dsl = {
+                meta: {
+                    name: 'ecommerce-api',
+                    description: 'Full-featured e-commerce platform with products, orders, and payments',
+                    version: '1.0.0',
+                    framework: 'django',
+                    database: 'postgresql'
+                },
+                auth: {
+                    provider: 'jwt',
+                    user_model: 'User',
+                    required_fields: ['email', 'password'],
+                    optional_fields: ['phone', 'address']
+                },
+                models: {
+                    User: {
+                        fields: {
+                            email: { type: 'string', unique: true, required: true },
+                            password: { type: 'string', required: true, hashed: true },
+                            phone: { type: 'string' },
+                            address: { type: 'text' }
+                        }
+                    },
+                    Product: {
+                        fields: {
+                            name: { type: 'string', max_length: 200, required: true },
+                            description: { type: 'text' },
+                            price: { type: 'decimal', required: true },
+                            stock: { type: 'integer', default: 0 },
+                            category: { type: 'string' }
+                        }
+                    },
+                    Order: {
+                        fields: {
+                            user: { type: 'foreign_key', model: 'User', required: true },
+                            product: { type: 'foreign_key', model: 'Product', required: true },
+                            quantity: { type: 'integer', required: true },
+                            total: { type: 'decimal', required: true },
+                            status: { type: 'string', default: 'pending' },
+                            created_at: { type: 'datetime', auto_now_add: true }
+                        }
+                    }
+                },
+                api: {
+                    base_path: '/api/v1',
+                    endpoints: [
+                        { path: '/auth/register', method: 'POST', handler: 'auth.register', public: true },
+                        { path: '/products', method: 'GET', handler: 'products.list', public: true },
+                        { path: '/orders', method: 'POST', handler: 'orders.create', auth_required: true },
+                        { path: '/orders', method: 'GET', handler: 'orders.list', auth_required: true }
+                    ]
+                }
+            };
+
+            const storeData = {
+                state: {
+                    projects: [],
+                    currentProject: null,
+                    currentDSL: dsl,
+                    promptFormData: null,
+                    activeFile: null
+                },
+                version: 0
+            };
+            localStorage.setItem('infranest-project-storage', JSON.stringify(storeData));
+            
+            const successDiv = document.getElementById('success');
+            successDiv.innerHTML = `
+                <strong>✅ Success!</strong> E-commerce DSL created with:
+                <ul>
+                    <li>3 Models: User, Product, Order</li>
+                    <li>4 API Endpoints</li>
+                    <li>Payment Ready Structure</li>
+                </ul>
+                <strong>Next Step:</strong> <a href="http://localhost:5173/generate" style="color: #000; text-decoration: underline;">Go to Code Generator →</a>
+            `;
+            successDiv.style.display = 'block';
+        }
+
+        function clearDSL() {
+            localStorage.removeItem('infranest-project-storage');
+            const successDiv = document.getElementById('success');
+            successDiv.innerHTML = '<strong>🗑️ DSL Cleared!</strong> You can create a new one above.';
+            successDiv.style.display = 'block';
+        }
+
+        // Check if DSL already exists
+        window.onload = function() {
+            const storeData = localStorage.getItem('infranest-project-storage');
+            const existingDSL = storeData ? JSON.parse(storeData).state?.currentDSL : null;
+            if (existingDSL) {
+                const successDiv = document.getElementById('success');
+                successDiv.innerHTML = `
+                    <strong>ℹ️ Info:</strong> You already have a DSL saved. 
+                    <a href="http://localhost:5173/generate" style="color: #000; text-decoration: underline;">Go to Code Generator →</a>
+                    <br><br>Or create a new one using the buttons above.
+                `;
+                successDiv.style.display = 'block';
+                successDiv.style.background = '#00ccff';
+            }
+        };
+    </script>
+</body>
+</html>

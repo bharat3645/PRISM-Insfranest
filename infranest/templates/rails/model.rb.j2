@@ -1,0 +1,20 @@
+class {{ model_name }} < ApplicationRecord
+  {% for field_name, field in model.fields.items() %}
+  {% if field.type == 'foreign_key' %}
+  belongs_to :{{ field.reference|snakecase }}{% if not field.required %}, optional: true{% endif %}
+  {% elif field.type == 'many_to_many' %}
+  has_and_belongs_to_many :{{ field.reference|pluralize|snakecase }}
+  {% elif field.type == 'one_to_many' %}
+  has_many :{{ field.reference|pluralize|snakecase }}{% if field.dependent %}, dependent: :{{ field.dependent }}{% endif %}
+  {% endif %}
+  {% endfor %}
+  
+  {% for field_name, field in model.fields.items() %}
+  {% if field.required and field.type not in ['foreign_key', 'many_to_many', 'one_to_many'] %}
+  validates :{{ field_name }}, presence: true
+  {% endif %}
+  {% if field.unique %}
+  validates :{{ field_name }}, uniqueness: true
+  {% endif %}
+  {% endfor %}
+end

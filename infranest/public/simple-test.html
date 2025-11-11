@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple State Test</title>
+    <style>
+        body {
+            font-family: monospace;
+            background: #0a0a0a;
+            color: #00ff88;
+            padding: 20px;
+        }
+        pre {
+            background: #111;
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid #333;
+        }
+        button {
+            background: #00ff88;
+            color: black;
+            border: none;
+            padding: 10px 20px;
+            margin: 10px 5px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Simple State Test</h1>
+    
+    <h2>What's in localStorage right now?</h2>
+    <button onclick="check()">Check Now</button>
+    <button onclick="clearStore()">Clear Store</button>
+    <button onclick="saveTest()">Save Test DSL</button>
+    <button onclick="window.location.href='/builder'">Go to Builder</button>
+    
+    <h3>Result:</h3>
+    <pre id="result">Click "Check Now" button...</pre>
+    
+    <script>
+        function check() {
+            const store = localStorage.getItem('infranest-project-storage');
+            const result = document.getElementById('result');
+            
+            if (!store) {
+                result.textContent = '❌ NO STORE DATA FOUND!\n\nThe store is empty. You need to either:\n1. Click "Save Test DSL" button\n2. OR go to /prompt and generate a DSL';
+                return;
+            }
+            
+            try {
+                const parsed = JSON.parse(store);
+                result.textContent = '✅ STORE DATA FOUND!\n\n' + JSON.stringify(parsed, null, 2);
+                
+                if (parsed.state && parsed.state.currentDSL) {
+                    result.textContent += '\n\n✅ currentDSL exists!';
+                    result.textContent += '\n✅ Project name: ' + (parsed.state.currentDSL.meta?.name || 'unknown');
+                } else {
+                    result.textContent += '\n\n❌ currentDSL is null or missing!';
+                }
+            } catch (e) {
+                result.textContent = '❌ ERROR parsing store: ' + e.message;
+            }
+        }
+        
+        function clearStore() {
+            localStorage.removeItem('infranest-project-storage');
+            alert('Store cleared!');
+            check();
+        }
+        
+        function saveTest() {
+            const testStore = {
+                state: {
+                    projects: [],
+                    currentProject: null,
+                    currentDSL: {
+                        meta: {
+                            name: 'simple-test-' + Date.now(),
+                            description: 'Simple test DSL',
+                            version: '1.0.0',
+                            framework: 'django',
+                            database: 'postgresql'
+                        },
+                        models: {
+                            TestModel: {
+                                fields: {
+                                    id: { type: 'uuid', primary_key: true },
+                                    name: { type: 'string', required: true }
+                                }
+                            }
+                        },
+                        auth: {
+                            provider: 'jwt',
+                            user_model: 'User',
+                            required_fields: ['email', 'password']
+                        },
+                        api: {
+                            base_path: '/api/v1',
+                            endpoints: []
+                        }
+                    },
+                    activeFile: null
+                },
+                version: 0
+            };
+            
+            localStorage.setItem('infranest-project-storage', JSON.stringify(testStore));
+            alert('✅ Test DSL saved with name: ' + testStore.state.currentDSL.meta.name);
+            check();
+        }
+        
+        // Auto-check on load
+        check();
+    </script>
+</body>
+</html>

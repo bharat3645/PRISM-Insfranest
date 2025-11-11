@@ -1,0 +1,202 @@
+[
+  {
+    "task_id": "blog_platform",
+    "prompt": "Build a blog platform",
+    "framework": "django",
+    "models_compared": [
+      "mixtral-8x7b-32768",
+      "llama-2-70b",
+      "mistral-7b",
+      "gemini-1.5-pro"
+    ],
+    "results": {
+      "mixtral-8x7b-32768": {
+        "quality_score": 9.05,
+        "generation_time": 9.18,
+        "success": true,
+        "cost_effectiveness": 98.57
+      },
+      "llama-2-70b": {
+        "quality_score": 7.88,
+        "generation_time": 14.28,
+        "success": false,
+        "cost_effectiveness": 55.2
+      },
+      "mistral-7b": {
+        "quality_score": 8.01,
+        "generation_time": 7.41,
+        "success": true,
+        "cost_effectiveness": 108.01
+      },
+      "gemini-1.5-pro": {
+        "quality_score": 9.06,
+        "generation_time": 13.13,
+        "success": true,
+        "cost_effectiveness": 69.05
+      }
+    },
+    "winner": "mistral-7b",
+    "criteria": "Best cost-effectiveness (quality per second)",
+    "timestamp": "2025-10-11T22:46:54.954142"
+  },
+  {
+    "task_id": "ecommerce_api",
+    "prompt": "Create an e-commerce API",
+    "framework": "django",
+    "models_compared": [
+      "mixtral-8x7b-32768",
+      "llama-2-70b",
+      "mistral-7b",
+      "gemini-1.5-pro"
+    ],
+    "results": {
+      "mixtral-8x7b-32768": {
+        "quality_score": 8.84,
+        "generation_time": 7.72,
+        "success": true,
+        "cost_effectiveness": 114.52
+      },
+      "llama-2-70b": {
+        "quality_score": 8.16,
+        "generation_time": 15.91,
+        "success": true,
+        "cost_effectiveness": 51.33
+      },
+      "mistral-7b": {
+        "quality_score": 8.2,
+        "generation_time": 7.89,
+        "success": true,
+        "cost_effectiveness": 103.94
+      },
+      "gemini-1.5-pro": {
+        "quality_score": 9.16,
+        "generation_time": 14.57,
+        "success": true,
+        "cost_effectiveness": 62.91
+      }
+    },
+    "winner": "mixtral-8x7b-32768",
+    "criteria": "Best cost-effectiveness (quality per second)",
+    "timestamp": "2025-10-17T22:46:54.954142"
+  },
+  {
+    "task_id": "task_manager",
+    "prompt": "Build a task management system",
+    "framework": "go",
+    "models_compared": [
+      "mixtral-8x7b-32768",
+      "llama-2-70b",
+      "mistral-7b",
+      "gemini-1.5-pro"
+    ],
+    "results": {
+      "mixtral-8x7b-32768": {
+        "quality_score": 9.01,
+        "generation_time": 10.79,
+        "success": true,
+        "cost_effectiveness": 83.55
+      },
+      "llama-2-70b": {
+        "quality_score": 7.89,
+        "generation_time": 15.49,
+        "success": true,
+        "cost_effectiveness": 50.97
+      },
+      "mistral-7b": {
+        "quality_score": 8.19,
+        "generation_time": 6.17,
+        "success": true,
+        "cost_effectiveness": 132.84
+      },
+      "gemini-1.5-pro": {
+        "quality_score": 8.85,
+        "generation_time": 14.75,
+        "success": false,
+        "cost_effectiveness": 60.01
+      }
+    },
+    "winner": "mistral-7b",
+    "criteria": "Best cost-effectiveness (quality per second)",
+    "timestamp": "2025-10-23T22:46:54.954142"
+  },
+  {
+    "task_id": "booking_system",
+    "prompt": "Create a booking system",
+    "framework": "rails",
+    "models_compared": [
+      "mixtral-8x7b-32768",
+      "llama-2-70b",
+      "mistral-7b",
+      "gemini-1.5-pro"
+    ],
+    "results": {
+      "mixtral-8x7b-32768": {
+        "quality_score": 9.22,
+        "generation_time": 10.25,
+        "success": true,
+        "cost_effectiveness": 89.98
+      },
+      "llama-2-70b": {
+        "quality_score": 8.16,
+        "generation_time": 16.89,
+        "success": true,
+        "cost_effectiveness": 48.3
+      },
+      "mistral-7b": {
+        "quality_score": 7.86,
+        "generation_time": 7.86,
+        "success": true,
+        "cost_effectiveness": 99.98
+      },
+      "gemini-1.5-pro": {
+        "quality_score": 9.03,
+        "generation_time": 13.13,
+        "success": true,
+        "cost_effectiveness": 68.71
+      }
+    },
+    "winner": "mistral-7b",
+    "criteria": "Best cost-effectiveness (quality per second)",
+    "timestamp": "2025-10-29T22:46:54.954142"
+  },
+  {
+    "task_id": "chat_app",
+    "prompt": "Build a real-time chat app",
+    "framework": "go",
+    "models_compared": [
+      "mixtral-8x7b-32768",
+      "llama-2-70b",
+      "mistral-7b",
+      "gemini-1.5-pro"
+    ],
+    "results": {
+      "mixtral-8x7b-32768": {
+        "quality_score": 9.41,
+        "generation_time": 9.98,
+        "success": true,
+        "cost_effectiveness": 94.35
+      },
+      "llama-2-70b": {
+        "quality_score": 8.25,
+        "generation_time": 16.81,
+        "success": true,
+        "cost_effectiveness": 49.08
+      },
+      "mistral-7b": {
+        "quality_score": 8.17,
+        "generation_time": 7.68,
+        "success": false,
+        "cost_effectiveness": 106.31
+      },
+      "gemini-1.5-pro": {
+        "quality_score": 8.78,
+        "generation_time": 14.27,
+        "success": true,
+        "cost_effectiveness": 61.56
+      }
+    },
+    "winner": "mistral-7b",
+    "criteria": "Best cost-effectiveness (quality per second)",
+    "timestamp": "2025-11-04T22:46:54.954142"
+  }
+]
